@@ -1,0 +1,43 @@
+.navbar {
+  background-color: #333;
+  margin-bottom: 60px;
+  box-shadow: 0 5px 10px 0 #888;
+}
+
+.navbar a {
+  color: #f9ed4e;
+}
+
+.navbar a:hover {
+  color: #00ffff;
+}
+
+.card {
+  margin-top: 100px;
+  padding: 20px 30px;
+}
+
+/* .card:hover {
+  box-shadow: 0 2px 1px 0 #888;
+} */
+
+.card h1 {
+	font-size: 18px;
+	color: #333;
+}
+
+.twitter a:hover {
+	color: #00acee;
+}
+
+.facebook a:hover {
+	color: #1877f2;
+}
+
+.google-plus a:hover {
+	color: #db4a39;
+}
+
+body{
+  background-color: rgb(230, 230, 230);
+}

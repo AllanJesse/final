@@ -1,0 +1,111 @@
+<?php include('includes/header.php');
+?>
+
+<?php
+                                            
+    if(isset($_POST['workshopSubmit'])){
+        
+        $firstname = $_POST['user_id'];
+        $role = $_POST['role'];
+        $sport_tool = $_POST['device_id'];
+        $no_tool = $_POST['no_tools'];
+        $date = $_POST['date'];
+
+        $query = "INSERT INTO `lended_devices`(`user_id`, `role`, `device_id`, `no_tools`, `date`) VALUES ('{$firstname}', '{$role}', '{$sport_tool}', '{$no_tool}', '{$date}')";
+        $sport_system = mysqli_query($con, $query);
+            if(!$sport_system){
+                die("QUERY FAILED" . mysqli_error($con));
+            }
+        echo "The Sport Tool has been Registered Successful";
+    }
+                                    
+?>
+
+<body>
+
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <?php include('includes/nav.php'); ?>
+
+        <div class="app-main">
+            <?php include('includes/sidebar.php'); ?>
+
+            <div class="app-main__outer">
+                <div class="app-main__inner">
+                    <?php include('includes/analytical_dash.php'); ?>
+
+                    <?php include('includes/dashboard_box.php'); ?>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="main-card mb-3 card">
+                            <?php
+
+                                $query = "SELECT * FROM users WHERE role = 'student' ";
+                                $result = mysqli_query($con, $query);
+
+                                if(!$result){
+                                    die("QUERY FAILED" . mysqli_error($con));
+                                }
+                            ?>
+                                    <div class="card-body"><h5 class="card-title">Workshop's Lending System</h5>
+                                                <div>
+                                                    <form action="" method="POST" class="form-inline">
+                                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group"><label for="firstname" class="mr-sm-2">Student's First Name</label>
+                                                            <select name="user_id" class="form-control" id="">
+                                                                <option value="" selected disabled>Select Student's Name</option>
+                                                                <?php
+                                                                while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['firstname']; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                                                            <label for="role" class="mr-sm-2">Role</label>
+                                                            <input type="text" class="form-control" name="role" placeholder="Enter your role">
+                                                        </div>
+                                                        <?php
+
+                                                            $query = "SELECT * FROM devices";
+                                                            $result = mysqli_query($con, $query);
+
+                                                            if(!$result){
+                                                                die("QUERY FAILED" . mysqli_error($con));
+                                                            }
+                                                        ?>
+                                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group"><label for="firstname" class="mr-sm-2">Device Name</label>
+                                                            <select name="device_id" class="form-control" id="">
+                                                                <option value="" selected disabled>Select Device Name</option>
+                                                                <?php
+                                                                while ($row = mysqli_fetch_assoc($result)) { ?>
+                                                                    <option value="<?php echo $row['id']; ?>"><?php echo $row['device_name']; ?></option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                                                            <label for="no_tools" class="mr-sm-2">Number of tools</label>
+                                                            <input type="text" class="form-control" name="no_tools" placeholder="Enter number of tools">
+                                                        </div>
+
+                                                        <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
+                                                            <label for="date" class="mr-sm-2">Date</label>
+                                                            <input type="date" class="form-control" name="date">
+                                                        </div>
+
+                                                        <button class="btn btn-primary" type="submit" name="workshopSubmit">Submit</button>
+                                                    </form>
+                                                </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+                <?php include('includes/footer.php'); ?>
+            </div>
+            <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        </div>
+    </div>
+<?php include('includes/end_footer.php'); ?>
+
