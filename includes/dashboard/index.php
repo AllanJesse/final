@@ -1,4 +1,67 @@
 <?php include('includes/header.php');
+ 
+?>
+<?php
+    $cleared = 0;
+    $queryfetch = mysqli_query($con, 'SELECT status,title_of_the_book FROM lending INNER JOIN books ON lending.book_id=books.id where user_id='.$_SESSION['id'].'');
+    // echo mysqli_num_rows($queryfetch);
+    $books = [];
+    if (mysqli_num_rows($queryfetch)!=0) {
+        while($lend =mysqli_fetch_array($queryfetch)){
+            
+            if ($lend['status']==='Borrowed') {
+                array_push($books,$lend['title_of_the_book']);
+                $cleared = 1;
+                
+            }
+        }
+    }
+
+        #workshop
+    $cleared_manager = 0;
+    $queryfetch_ws = mysqli_query($con, 'SELECT status,device_name FROM lended_devices INNER JOIN devices ON lended_devices.device_id=devices.id where user_id='.$_SESSION['id'].'');
+    // echo mysqli_num_rows($queryfetch);
+    $devices = [];
+    if (mysqli_num_rows($queryfetch_ws)!=0) {
+        while($lend_ws=mysqli_fetch_array($queryfetch_ws)){
+            
+            if ($lend_ws['status']==='Borrowed') {
+                array_push($devices,$lend_ws['device_name']);
+                $cleared_manager = 1;
+            }
+        }
+    }
+
+
+         #wsports
+         $cleared_sports = 0;
+         $queryfetch_sp= mysqli_query($con, 'SELECT status,sport_tool FROM sports where user_id='.$_SESSION['id'].'');
+         // echo mysqli_num_rows($queryfetch);
+         $sport = [];
+         if (mysqli_num_rows($queryfetch_sp)!=0) {
+             while($lend_sp=mysqli_fetch_array($queryfetch_sp)){
+                 
+                 if ($lend_sp['status']==='Borrowed') {
+                     array_push($sport,$lend_sp['sport_tool']);
+                     $cleared_sports = 1;
+                 }
+             }
+         }
+
+         #acccounts
+         $cleared_account = 0;
+         $queryfetch_acc= mysqli_query($con, 'SELECT status FROM finance where user_id='.$_SESSION['id'].'');
+         // echo mysqli_num_rows($queryfetch);
+        //  $accounts = [];
+         if (mysqli_num_rows($queryfetch_acc)!=0) {
+             while($lend_acc=mysqli_fetch_array($queryfetch_acc)){
+                 
+                 if ($lend_acc['status']==='Borrowed') {
+                    //  array_push($accounts,$lend_acc['sport_tool']);
+                     $cleared_account = 1;
+                 }
+             }
+         }
 ?>
 
 <body>
@@ -34,11 +97,11 @@
                                                 <th>Department</th>
                                                 <th class="text-center">Comments</th>
                                                 <th class="text-center">Status</th>
-                                                <th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
 
                                             <tbody>
+
                                                 <tr>
                                                     <td class="text-center text-muted">1.</td>
                                                     <td>
@@ -50,15 +113,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -73,15 +133,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -96,15 +153,31 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center"><?php if($cleared_manager==0){
+                                                        echo "None";
+                                                    }else{
+                                                        foreach ($devices as $bk => $value) {
+                                                            echo $value."<br/>";
+                                                        }
+                                                    }?></td>
                                                     <td class="text-center">
+                                                    
+                                                    <?php
+                                                        if ($cleared_manager==1) {?>
+                                                    
                                                         <button class="btn btn-primary" type="button" disabled>
                                                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                                             <span class="visually-hidden">Pending...</span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
+                                                        <?php
+                                                        } else{?>
+                                                     <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
+                                                        </button>
+                                                    <?php
+                                                        }
+                                                    ?>
                                                     </td>
                                                 </tr>
 
@@ -119,15 +192,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -142,15 +212,31 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center"><?php if($cleared==0){
+                                                        echo "None";
+                                                    }else{
+                                                        foreach ($books as $bk => $value) {
+                                                            echo $value."<br/>";
+                                                        }
+                                                    }?></td>
                                                     <td class="text-center">
+                                                    
+                                                    <?php
+                                                        if ($cleared ==1) {?>
+                                                    
                                                         <button class="btn btn-primary" type="button" disabled>
                                                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                                             <span class="visually-hidden">Pending...</span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
+                                                        <?php
+                                                        } else{?>
+                                                     <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
+                                                        </button>
+                                                    <?php
+                                                        }
+                                                    ?>
                                                     </td>
                                                 </tr>
 
@@ -165,15 +251,31 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center"><?php if($cleared_sports==0){
+                                                        echo "None";
+                                                    }else{
+                                                        foreach ($sport as $bk => $value) {
+                                                            echo $value."<br/>";
+                                                        }
+                                                    }?></td>
                                                     <td class="text-center">
+                                                    
+                                                    <?php
+                                                        if ($cleared_sports==1) {?>
+                                                    
                                                         <button class="btn btn-primary" type="button" disabled>
                                                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                                             <span class="visually-hidden">Pending...</span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
+                                                        <?php
+                                                        } else{?>
+                                                     <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
+                                                        </button>
+                                                    <?php
+                                                        }
+                                                    ?>
                                                     </td>
                                                 </tr>
 
@@ -188,15 +290,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -211,15 +310,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -234,15 +330,12 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center">None</td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-primary" type="button" disabled>
-                                                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-                                                            <span class="visually-hidden">Pending...</span>
+                                                        <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
                                                     </td>
                                                 </tr>
 
@@ -257,15 +350,29 @@
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center">Comments</td>
+                                                    <td class="text-center"><?php if($cleared_account==0){
+                                                        echo "None";
+                                                    }else{
+                                                        echo "Check with Account Office";
+                                                    }?></td>
                                                     <td class="text-center">
+                                                    
+                                                    <?php
+                                                        if ($cleared_account==1) {?>
+                                                    
                                                         <button class="btn btn-primary" type="button" disabled>
                                                             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                                                             <span class="visually-hidden">Pending...</span>
                                                         </button>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" id="PopoverCustomT-1" class="btn btn-primary btn-sm">Details</button>
+                                                        <?php
+                                                        } else{?>
+                                                     <button class="btn btn-success" type="button" disabled>
+                                                            <!-- <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> -->
+                                                            <span class="visually-hidden">Cleared  <i class="fa fa-check"></i></span>
+                                                        </button>
+                                                    <?php
+                                                        }
+                                                    ?>
                                                     </td>
                                                 </tr>
 

@@ -12,8 +12,10 @@
 		$password = mysqli_real_escape_string($con, trim(strip_tags($_POST['password'])));
 		$confirm_password = mysqli_real_escape_string($con, trim(strip_tags($_POST['confirm_password'])));
 		$status = 'Active';
-		$role = 'student';
-
+		$role = mysqli_real_escape_string($con, trim(strip_tags($_POST['cheo'])));
+		if ($role == 'student') {
+			$dept = 11;
+		}
 		if(empty($firstname)) {
 			array_push($errors, 'Firstname field should not be empty');
 		}
@@ -51,8 +53,14 @@
 			} else {
 				$password_hashed = password_hash($password, PASSWORD_DEFAULT);
 				$register = "INSERT INTO `users`(`firstname`, `lastname`, `email`, `gender`, `level`, `dept_id`, `role`, `status`, `password`) VALUES ('$firstname', '$lastname', '$email', '$gender', '$level', '$dept', '$role', '$status', '$password_hashed')";
+				
+				
+
 				if (mysqli_query($con, $register)) {
 					header('location: index.php');
+				}
+				else{
+					echo "A reason i am".mysqli_error($con);
 				}
 			}
 		}

@@ -2,8 +2,12 @@
 if(isset($_GET['balance'])){
     $id = $_GET['id'];
     $balance = $_GET['balance'];
+    $stat = "Borrowed";
+    if($balance==0){
+        $stat= "Cleared";
+    }
 
-    $query = "UPDATE `lending` SET `return_book`=1,`overdue_balance`= '{$balance}' WHERE id = $id";
+    $query = "UPDATE `lending` SET `return_book`=1,`overdue_balance`= '{$balance}', `status`='{$stat}' WHERE id = $id";
     $result = mysqli_query($con, $query);
     header('location: lending_view.php');
 }

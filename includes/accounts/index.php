@@ -147,7 +147,7 @@
                                     
                                             if(empty($errors)) {
                                     
-                                                $query = "INSERT INTO `finance`(`user_id`, `first1`, `semester1`, `first2`, `semester2`, `first3`, `semester3`, `status`) VALUES('{$firstname}', '{$first1}', '{$semester1}', '{$first2}', '{$semester2}', '{$first3}', '{$semester3}', 'Cleared')";
+                                                $query = "INSERT INTO `finance`(`user_id`, `first1`, `semester1`, `first2`, `semester2`, `first3`, `semester3`, `status`) VALUES('{$firstname}', '{$first1}', '{$semester1}', '{$first2}', '{$semester2}', '{$first3}', '{$semester3}', 'Borrowed')";
                                                 $records = mysqli_query($con, $query);
                                                     if(!$records){
                                                         die("QUERY FAILED" . mysqli_error($con));

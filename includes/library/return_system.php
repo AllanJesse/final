@@ -2,10 +2,9 @@
 if(isset($_GET['balance'])){
     $id = $_GET['id'];
     $balance = $_GET['balance'];
-
-    $query = "UPDATE `lending` SET `return_book`=1,`overdue_balance`= '{$balance}' WHERE id = $id";
+    $query = "UPDATE `lending` SET `return_book`=1,`overdue_balance`= '{$balance}',`status`=$status WHERE id = $id";
     $result = mysqli_query($con, $query);
-    header('location: lending_view.php');
+    // header('location: lending_view.php');
 }
 
 if(isset($_POST['clear'])){
